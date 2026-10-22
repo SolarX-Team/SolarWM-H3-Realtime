@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SolarWM H3 Realtime Interaction — SolarX-Team</title>
+<meta name="author" content="杜壹华、黄俊超、陈博宏、刘耀阳、张梓欣、孔祥浩、闫栋宇、赵卓然、方桂安、陈雅静、錢湦鉅">
+<meta name="description" content="分阶段加速 SolarWM H3，从静态推理到低延迟的实时交互与流式生成。">
+<link rel="icon" type="image/png" href="media/solarx-team-logo.png">
+<link rel="canonical" href="https://solarx-team.github.io/SolarWM-H3-Realtime/zh.html">
+<style>:root{--bg:#faf9f5;--panel:#f5f4ed;--line:#e8e6dc;--strong-line:#d1cfc5;--ink:#141413;--muted:#5e5d59;--faint:#87867f;--clay:#d97757;--pink:#c46686;--blue:#6a9bcc;--olive:#788c5d;--purple:#6f5b8a;--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,"Songti SC",serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit;text-underline-offset:4px}button,a,summary,[tabindex]{-webkit-tap-highlight-color:transparent}a:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--blue);outline-offset:5px;border-radius:3px}.skip-link{position:fixed;left:18px;top:-100px;background:var(--ink);color:#fff;padding:12px;z-index:100}.skip-link:focus{top:10px}.topbar{height:56px;padding:0 28px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:28px;background:rgba(250,249,245,.97);position:sticky;top:0;z-index:20;font-size:13px}.brand{text-decoration:none;font-weight:650;white-space:nowrap;margin-right:auto}.brand span{font-weight:400;margin-left:12px;color:var(--faint);font-size:12px}.topnav{display:flex;align-items:center;gap:22px}.topnav>a,.topnav summary{text-decoration:none;color:var(--muted)}.topnav>a:hover,.topnav summary:hover{color:var(--ink)}summary{cursor:pointer;list-style:none}summary::-webkit-details-marker{display:none}.nav-menu{position:relative}.nav-menu summary span{padding-left:4px;color:var(--faint)}.nav-menu>div{position:absolute;top:28px;left:-18px;width:335px;border:1px solid var(--line);padding:9px;background:var(--bg);box-shadow:0 8px 24px #1414130d;border-radius:8px}.nav-menu a{display:block;text-decoration:none;padding:11px 10px;line-height:1.4;border-radius:4px}.nav-menu a:hover{background:var(--panel)}.lang-switch{display:flex;background:var(--panel);padding:3px;border:1px solid var(--line);border-radius:99px;gap:2px;white-space:nowrap}.lang-switch a{text-decoration:none;padding:5px 11px;color:var(--faint);border-radius:99px;font-size:11px;font-weight:600}.lang-switch a[aria-current]{background:#fff;color:var(--ink);box-shadow:0 1px 3px #1414130b}.post{max-width:700px;margin:0 auto}.post-header{margin:76px -210px 64px;text-align:center}.eyebrow{text-transform:uppercase;letter-spacing:1.7px;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:24px}h1{font-size:54px;line-height:1.08;letter-spacing:-2px;font-weight:650;margin:0 0 24px}.subtitle{font-family:var(--serif);font-size:21px;color:var(--muted);line-height:1.5;margin:0 0 22px}.keywords{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 21px}.byline{font-size:13px;font-weight:500;margin:0 0 8px}.hardware{font-size:12px;color:var(--faint);margin:0}article{font-family:var(--serif);font-size:20px;line-height:1.5}article p{margin:0 0 1.1em}article strong{font-weight:650}article p a{text-decoration-color:var(--strong-line)}article p a:hover{text-decoration-color:var(--clay);color:var(--clay)}h2{font-family:var(--sans);font-size:29px;line-height:1.25;letter-spacing:-.7px;font-weight:620;margin:78px 0 23px}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.75em;background:var(--panel);border:1px solid var(--line);padding:2px 4px;border-radius:4px;overflow-wrap:anywhere}.wide{position:relative;left:50%;transform:translateX(-50%);width:960px;max-width:calc(100vw - 48px)}.chart{margin:35px 0 30px;padding:28px 30px 20px;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-family:var(--sans)}.chart-title{font-size:18px;font-weight:600;letter-spacing:-.35px;line-height:1.4;margin-bottom:4px}.chart-subtitle{font-size:12px;color:var(--muted);margin-bottom:28px}.bar-row{display:grid;grid-template-columns:230px minmax(0,1fr) 58px;gap:18px;align-items:center;margin:15px 0}.bar-label{font-size:13px;line-height:1.4}.bar-track{height:25px;background:repeating-linear-gradient(to right,var(--strong-line) 0,var(--strong-line) 1px,transparent 1px,transparent var(--tick));border-left:1px solid var(--strong-line)}.bar{height:100%;border-radius:0 3px 3px 0;background:var(--faint)}.color-1{background:var(--clay)}.color-2{background:var(--pink)}.color-3{background:var(--blue)}.color-4{background:var(--olive)}.color-5{background:var(--purple)}.bar-value{font-size:14px;font-variant-numeric:tabular-nums;text-align:right;font-weight:600}.axis{padding:0 76px 0 248px;margin-top:18px;height:20px}.axis>div{position:relative;font-size:10px;color:var(--faint)}.axis span{position:absolute;transform:translateX(-50%)}figcaption{font-family:var(--sans);font-size:12px;line-height:1.6;color:var(--muted);margin-top:22px;border-top:1px solid var(--line);padding-top:14px}.table-scroll{overflow-x:auto;margin:32px 0;font-family:var(--sans);font-size:13px;line-height:1.55;scrollbar-width:thin}table{width:100%;border-collapse:collapse;min-width:720px}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}thead th{font-size:12px;font-weight:650;color:var(--muted);border-top:1px solid var(--strong-line);border-bottom:1px solid var(--strong-line)}tbody th{font-weight:500}tbody tr:last-child{background:var(--panel)}.numeric{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.toc{display:none}.mobile-menu{display:none}.resources{margin-top:32px;padding-top:22px;border-top:1px solid var(--line);display:flex;gap:25px;font-family:var(--sans);font-size:13px;flex-wrap:wrap}.resources a{text-decoration:none}.resources a:hover{color:var(--clay)}footer{border-top:1px solid var(--line);margin:64px 0 36px;padding-top:24px;display:flex;justify-content:space-between;font-size:12px;color:var(--faint)}footer a{text-decoration:none}
+@media(min-width:1620px){.toc{display:block;position:fixed;left:calc(50vw - 790px);top:150px;width:210px;font-family:var(--sans)}.toc>span{text-transform:uppercase;letter-spacing:1px;font-size:10px;font-weight:600;color:var(--faint)}.toc nav{display:flex;flex-direction:column;gap:2px;margin-top:15px}.toc a{font-size:12px;line-height:1.5;color:var(--faint);border-left:1px solid var(--line);padding:7px 0 7px 13px;text-decoration:none}.toc a:hover,.toc a.active{color:var(--ink);border-color:var(--clay)}}
+@media(max-width:1180px){.brand span{display:none}.topbar{gap:18px}.topnav{gap:16px}.post-header{margin-left:-100px;margin-right:-100px}h1{font-size:50px}}
+@media(max-width:1000px){.topnav{display:none}.post{padding:0 24px;max-width:748px}.post-header{margin:64px 0 48px}.mobile-menu{display:block;margin-bottom:34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px}.mobile-menu summary{display:flex;justify-content:space-between;padding:14px 0}.mobile-menu nav{display:flex;flex-direction:column;gap:12px;padding:5px 0 20px}.mobile-menu a{text-decoration:none;color:var(--muted)}h1{font-size:46px}.bar-row{grid-template-columns:190px minmax(0,1fr) 58px;gap:15px}.axis{padding-left:205px;padding-right:73px}}
+@media(max-width:600px){.topbar{padding:0 16px;gap:10px}.brand{font-size:12px}.lang-switch a{padding:5px 8px;font-size:10px}.post-header{margin:46px 0 38px}.eyebrow{font-size:10px;margin-bottom:21px}h1{font-size:36px;letter-spacing:-1.3px;line-height:1.12}.subtitle{font-size:18px}.keywords{font-size:11px;margin-bottom:18px}.byline{font-size:12px}article{font-size:18px;line-height:1.6}h2{font-size:26px;margin-top:58px}.chart{padding:21px 18px 17px}.chart-title{font-size:16px}.chart-subtitle{margin-bottom:21px}.bar-row{grid-template-columns:minmax(0,1fr) 48px;gap:6px 13px;margin:17px 0}.bar-label{grid-column:1/-1;font-size:12px}.bar-track{height:23px}.bar-value{font-size:13px}.axis{padding-left:0;padding-right:61px;margin-top:14px}figcaption{font-size:11px}.resources{gap:18px;font-size:12px}.table-scroll{font-size:12px}footer{margin-top:45px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.topbar,.toc,.mobile-menu,.resources,.skip-link{display:none}.post{max-width:none;padding:0}.post-header{margin:30px 0}article{font-size:12pt}h1{font-size:30pt}h2{margin-top:32px;font-size:20pt}.wide{width:100%;max-width:100%;left:0;transform:none}.chart,table{break-inside:avoid}body{background:#fff}}
+
+/*
+ * Local-only typography alignment with:
+ * https://solarx-team.github.io/H3-Streaming-VAE-Decoder/assets/style.css
+ * Checked 2026-10-20. Use the same system-font stacks, without remote fonts.
+ * Selector names differ because this article nests its paragraphs in sections.
+ */
+:root {
+  --serif: Charter, "Bitstream Charter", "Iowan Old Style", "Source Serif 4", "Source Serif Pro", Georgia, Cambria,
+    "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color-scheme: light;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body { -moz-osx-font-smoothing: grayscale; }
+
+.author-fold {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+.author-fold > .author-names { border-bottom: 1px dotted var(--strong-line); }
+.author-fold:hover > .author-names,
+.author-fold:focus-visible > .author-names { border-bottom-color: var(--clay); }
+.author-fold:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; border-radius: 3px; }
+.author-fold [hidden] { display: none; }
+.post-header .byline.team { margin-top: 4px; }
+.post .cite { color: var(--muted); font-family: var(--sans); font-size: 0.78em; font-weight: 400; white-space: nowrap; }
+.post .cite a { color: inherit; text-decoration: none; }
+.post .cite a:hover { color: var(--clay); }
+.post .reference-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.post .reference-list li {
+  display: grid;
+  grid-template-columns: 2.7em minmax(0, 1fr);
+  margin: 0 -10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+}
+.reference-list .ref-number { color: var(--faint); font-variant-numeric: tabular-nums; }
+.reference-list .ref-title { color: var(--ink); font-style: italic; overflow-wrap: anywhere; }
+.reference-list a { overflow-wrap: anywhere; }
+.reference-list li:target { background: rgba(217, 119, 87, 0.12); }
+
+@media screen {
+  article,
+  article p,
+  article ul,
+  article ol {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.62;
+    letter-spacing: normal;
+    text-align: start;
+  }
+  html:lang(zh) article,
+  html:lang(zh) article p,
+  html:lang(zh) article ul,
+  html:lang(zh) article ol {
+    font-size: 17px;
+    line-height: 1.9;
+  }
+  article p { margin: 0 0 1.1em; }
+  article ul, article ol { margin: 0 0 1.2em; padding-left: 1.4em; }
+  article li { margin: 0.4em 0; padding-left: 4px; }
+  article li::marker { color: var(--faint); }
+  article b, article strong { color: var(--ink); font-weight: 650; }
+
+  .post-header h1 {
+    font-family: var(--sans);
+    font-size: clamp(36px, 5.4vw, 58px);
+    line-height: 1.06;
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    margin: 0 0 22px;
+  }
+  .post h2 {
+    font-family: var(--sans);
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    margin: 88px 0 20px;
+  }
+  .post h3 {
+    font-family: var(--sans);
+    font-size: 21px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 56px 0 14px;
+  }
+  .post-header .eyebrow {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--ink);
+    margin: 0 0 24px;
+  }
+  .post-header .keywords {
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+  }
+  .post-header .byline,
+  .post-header .hardware {
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 400;
+    color: var(--muted);
+    margin: 10px 0 0;
+  }
+  .post-header .hardware { margin-top: 4px; }
+  /* The reference has no subtitle. Use its reading-face scale for ours. */
+  .post-header .subtitle { font-size: 18px; line-height: 1.62; }
+  html:lang(zh) .post-header .subtitle { font-size: 17px; line-height: 1.9; }
+
+  .post code {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    padding: 0.12em 0.36em;
+  }
+  .post table {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+  .post thead th { font-size: inherit; font-weight: 500; }
+  .post figcaption {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .post-header h1 { font-size: 36px; }
+  article, article p, article ul, article ol { font-size: 17px; }
+  html:lang(zh) article,
+  html:lang(zh) article p,
+  html:lang(zh) article ul,
+  html:lang(zh) article ol { font-size: 16.5px; }
+  .post h2 { margin-top: 64px; font-size: 25px; }
+  .post h3 { margin-top: 44px; font-size: 19px; }
+  .post-header .subtitle { font-size: 17px; }
+  html:lang(zh) .post-header .subtitle { font-size: 16.5px; }
+}
+
+/* Keep the requested English title on one line, including narrow phones. */
+html:lang(en) .post-header h1 { white-space: nowrap; }
+@media screen and (max-width: 480px) {
+  html:lang(en) .post-header h1 {
+    font-size: clamp(18px, calc((100vw - 48px) * 0.08), 36px);
+  }
+}
+
+/* Reference-aligned article layout; all assets stay in the offline export. */
+:root { --panel-2:#f0eee6; --card:#fff; }
+::selection { background:rgba(217,119,87,.24); }
+html { scroll-padding-top:84px; }
+button { font:inherit; }
+.topbar { height:56px; gap:16px; padding:0 28px; z-index:30; background:rgba(250,249,245,.9); backdrop-filter:saturate(160%) blur(10px); -webkit-backdrop-filter:saturate(160%) blur(10px); }
+.topbar .name { display:flex; align-items:center; gap:9px; min-width:0; margin-right:auto; overflow:hidden; color:var(--ink); font-size:15px; font-weight:600; letter-spacing:-.01em; text-decoration:none; white-space:nowrap; }
+.topbar .team-logo { display:block; width:40px; height:40px; flex:none; object-fit:contain; border-radius:6px; }
+.topbar .brand-label { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.name small { margin-left:12px; color:var(--faint); font-size:13px; font-weight:400; letter-spacing:0; }
+.nav { display:flex; align-self:stretch; margin-right:4px; }
+.nav-item { position:relative; display:flex; }
+.nav>a,.nav-item>a { display:flex; align-items:center; gap:5px; padding:0 11px; color:var(--muted); font-size:14px; text-decoration:none; white-space:nowrap; }
+.nav a:hover { color:var(--ink); }
+.nav-item svg { width:9px; height:6px; fill:none; stroke:currentColor; stroke-width:1.5; opacity:.7; }
+.nav-sub { position:absolute; top:100%; left:0; min-width:240px; padding:6px; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:0 10px 30px #1414131f,0 1px 3px #1414130f; visibility:hidden; opacity:0; transform:translateY(4px); transition:opacity .15s,transform .15s; }
+.nav-item:hover .nav-sub,.nav-item:focus-within .nav-sub { visibility:visible; opacity:1; transform:none; }
+.nav-item.closed .nav-sub { visibility:hidden; opacity:0; }
+.nav-sub a { display:block; padding:7px 12px; border-radius:8px; font-size:13.5px; line-height:1.4; text-decoration:none; white-space:nowrap; color:var(--muted); }
+.nav-sub a:hover { background:var(--panel-2); }
+.toc-btn { display:none; align-items:center; gap:6px; height:32px; padding:0 11px; border:1px solid var(--line); border-radius:9px; background:var(--panel-2); color:var(--muted); font-size:12.5px; font-weight:500; cursor:pointer; flex:none; }
+.toc-btn svg { width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; }
+.segmented { display:inline-flex; gap:2px; padding:2px; border:1px solid var(--line); border-radius:9px; background:var(--panel-2); flex:none; }
+.segmented a { padding:3px 10px; border-radius:7px; color:var(--muted); font-size:12.5px; font-weight:500; line-height:1.6; white-space:nowrap; text-decoration:none; }
+.segmented a[aria-current] { background:var(--card); color:var(--ink); box-shadow:0 0 0 1px var(--strong-line),0 1px 2px #1414130f; }
+.gh { display:grid; place-items:center; width:24px; height:30px; flex:none; }
+.gh svg { width:20px; height:20px; }
+main { padding:76px 24px 120px; }
+.post { max-width:960px; padding:0; margin:0 auto; }
+.post .wide { width:100%; max-width:100%; left:0; transform:none; }
+.post-header { width:100%; margin:0 0 64px; text-align:center; }
+.post .post-header p { font-family:var(--sans); text-align:center; line-height:1.6; }
+.post-header h1 { white-space:nowrap; }
+.chart { padding:0; background:none; border:0; border-radius:0; margin:44px 0 52px; }
+/* SolarWM title gold (#8b6b3f), rendered as one light-to-dark stage palette. */
+.chart { --solarwm-gold:#8b6b3f; --solarwm-gold-deep:#70522d; --solarwm-paper:#f3f0ec; }
+.chart .bar-track { height:20px; border-left-color:#b8b8b8; background:repeating-linear-gradient(to right,#dedede 0,#dedede 1px,transparent 1px,transparent var(--tick)); }
+.chart .bar { background:var(--solarwm-gold); border-radius:0; }
+.chart .bar.color-1 { background:#b39e7d; }
+.chart .bar.color-2 { background:#a1875d; }
+.chart .bar.color-3 { background:var(--solarwm-gold); }
+.chart .bar.color-4 { background:var(--solarwm-gold-deep); }
+.chart .bar.color-0 { background:#c6b79d; }
+.vae-chart .bar-row:last-child .bar { background:var(--solarwm-gold-deep); }
+.post figure figcaption { border:0; padding:0; margin-top:14px; max-width:100%; }
+.table-scroll { width:100%; max-width:100%; left:0; transform:none; margin:28px 0 32px; }
+.post table { min-width:620px; }
+.post th,.post td { padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+.post th:first-child,.post td:first-child { padding-left:0; }
+.post th:last-child,.post td:last-child { padding-right:0; }
+.post thead th { border-top:0; border-bottom-color:var(--ink); }
+.post tbody tr:last-child { background:none; }
+.post tbody tr:last-child th,.post tbody tr:last-child td { font-weight:650; }
+.post code { background:var(--panel-2); border:0; color:#3d3d3a; }
+.post pre { margin:0 0 24px; padding:16px 18px; border:1px solid var(--line); border-radius:10px; background:var(--panel); overflow-x:auto; font-size:13px; line-height:1.65; }
+.post pre code { padding:0; background:none; font-size:inherit; white-space:pre; overflow-wrap:normal; }
+.bib { position:relative; }
+.bib pre { padding-top:48px; }
+.copy { position:absolute; top:10px; right:10px; padding:3px 10px; border:1px solid var(--strong-line); border-radius:6px; color:var(--muted); background:var(--card); font-family:var(--sans); font-size:12px; cursor:pointer; }
+.copy-status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.toc { position:fixed; top:112px; left:calc(50% - 560px - 236px); width:200px; display:none; font-family:var(--sans); font-size:13px; line-height:1.45; }
+.toc nav { display:block; margin:0; }
+.toc a { display:block; padding:5px 0 5px 14px; border-left:1px solid var(--line); color:var(--faint); font-size:13px; line-height:1.45; text-decoration:none; }
+.toc a.sub { padding-left:26px; font-size:12.5px; }
+.toc a:hover,.toc a.active { color:var(--ink); border-left-color:var(--ink); }
+footer { display:block; margin:0; padding:30px 24px 44px; border-top:1px solid var(--line); color:var(--faint); font-size:13px; text-align:center; }
+footer .authors { margin:0 0 8px; color:var(--muted); font-size:14px; }
+footer .repo { display:inline-flex; align-items:center; gap:7px; margin-top:10px; text-decoration:none; }
+.repo svg { width:16px; height:16px; }
+footer .repo-note { margin:8px 0 0; font-size:12px; }
+@media(min-width:1620px) { .toc { display:block; } }
+@media(max-width:1259px) { .name small { display:none; } }
+@media(max-width:999px) {
+  .nav { display:none; }
+  .toc-btn { display:inline-flex; }
+  .toc.open { display:block; top:64px; left:auto; right:12px; z-index:35; width:min(300px,calc(100vw - 24px)); max-height:calc(100vh - 80px); overflow-y:auto; padding:12px 16px 12px 10px; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:0 10px 30px #1414131f,0 1px 3px #1414130f; }
+}
+@media(max-width:860px) {
+  main { padding:44px 18px 80px; }
+  .topbar { padding:0 16px; }
+  .post-header { width:auto; margin:0 0 48px; }
+  .chart.wide { width:100%; max-width:100%; left:0; transform:none; }
+  .post table { min-width:600px; }
+}
+@media(max-width:520px) {
+  .topbar { gap:10px; padding:0 14px; }
+  .topbar .name { font-size:14px; }
+  .segmented a { padding:3px 8px; }
+  .toc-btn { padding:0 9px; }
+  .toc-btn span { display:none; }
+}
+@media(max-width:480px) {
+  .post-header h1 { font-size:clamp(18px,calc((100vw - 48px) * .08),36px); }
+}
+@media(prefers-reduced-motion:reduce) { .nav-sub { transition:none; } }
+@media print { .toc-btn,.gh,.copy { display:none; } main { padding:0; } .post-header { width:auto; margin:30px 0; } }
+/* Review placeholder: replaced with the interaction demo when the video is ready. */
+.interaction-demo { margin:32px 0 44px; }
+.interaction-demo video { display:block; width:100%; height:auto; border-radius:6px; background:#f7f5f1; }
+.post .interaction-demo figcaption { text-align:center; font-family:var(--sans); }
+.interaction-video-placeholder { box-sizing:border-box; aspect-ratio:16 / 9; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; margin:32px 0 44px; padding:24px; border:1px dashed #c6b79d; border-radius:6px; background:#f7f5f1; text-align:center; }
+.interaction-video-placeholder svg { width:56px; height:56px; color:#8b6b3f; flex:none; }
+.post .interaction-video-placeholder figcaption { margin:0; padding:0; border:0; font-family:var(--sans); line-height:1.6; }
+.interaction-video-placeholder .placeholder-title { display:block; color:var(--ink); font-size:18px; font-weight:600; }
+.interaction-video-placeholder .placeholder-note { display:block; margin-top:4px; color:var(--muted); font-size:14px; }
+/* Local measured-speed comparison: no external player or asset dependency. */
+.realtime-comparison { margin: 36px 0 42px; }
+.realtime-comparison video { display: block; width: 100%; height: auto; aspect-ratio: 1856 / 688; background: #eeede6; border-radius: 6px; }
+.post .realtime-comparison figcaption { margin: 14px auto 0; text-align: left; line-height: 1.65; }
+.realtime-comparison .comparison-scope { color: var(--muted, #6f7069); }
+@media(max-width:860px) {
+  .realtime-comparison.wide { width:100%; max-width:100%; left:0; transform:none; }
+}
+
+.chunk-demo { margin:0 0 36px; padding:20px 24px; border:1px solid var(--line); border-radius:10px; background:var(--panel,#f0eee6); font-family:var(--sans); }
+.post .chunk-demo p,.post .chunk-demo ol,.post .chunk-demo li,.post .chunk-demo figcaption { font-family:var(--sans); }
+.chunk-demo:focus-visible { outline:2px solid #347565; outline-offset:4px; }
+.chunk-demo-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:16px; }
+.post .chunk-demo .chunk-demo-title { margin:0; font-size:18px; font-weight:600; line-height:1.3; text-align:start; }
+.chunk-demo-actions { display:flex; align-items:center; gap:12px; flex:none; }
+.chunk-replay,.chunk-toggle { display:inline-flex; align-items:center; gap:7px; flex:none; min-height:36px; padding:6px 10px; border:1px solid #c9c5b8; border-radius:7px; background:#faf9f5; color:var(--ink); font-family:var(--sans); font-size:12px; cursor:pointer; }
+.chunk-replay:hover:not(:disabled),.chunk-toggle:hover:not(:disabled) { background:#fff; border-color:#9b705f; }
+.chunk-replay:disabled,.chunk-toggle:disabled { cursor:wait; opacity:.6; }
+.chunk-replay:focus-visible,.chunk-toggle:focus-visible { outline:2px solid #347565; outline-offset:3px; }
+.chunk-replay kbd { display:inline-grid; place-items:center; width:22px; height:22px; border:1px solid #d7d2c6; border-bottom-width:2px; border-radius:4px; font-family:inherit; font-size:12px; font-weight:600; line-height:1; }
+.chunk-demo[data-running="true"] .chunk-replay kbd { background:#347565; border-color:#347565; color:#fff; }
+.chunk-clock { min-width:52px; text-align:right; font-variant-numeric:tabular-nums; font-size:13px; color:var(--muted); }
+.chunk-lane + .chunk-lane { margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
+.chunk-lane-heading { display:flex; align-items:center; gap:10px; margin-bottom:6px; font-size:15px; line-height:1.4; }
+.chunk-phase { margin-left:auto; color:var(--muted); font-size:12px; }
+.chunk-total { min-width:64px; text-align:right; font-weight:600; font-variant-numeric:tabular-nums; }
+.chunk-lane[data-phase="done"] .chunk-phase { color:#347565; }
+.chunk-lane-body { display:grid; grid-template-columns:minmax(0,1fr) 128px; gap:18px; align-items:start; }
+.chunk-timing { min-width:0; }
+.chunk-dependency { position:relative; height:34px; margin-top:0; font-size:11px; color:#95641f; }
+.chunk-dependency span { position:absolute; bottom:6px; display:flex; align-items:center; justify-content:center; min-height:22px; border:1px solid #b9945c; border-top:0; text-align:center; line-height:1.3; }
+.chunk-dependency.no-lookahead { display:flex; align-items:center; color:#347565; }
+.chunk-track { position:relative; height:16px; border-radius:4px; background:#e7e4db; }
+.chunk-segment { position:absolute; top:0; height:100%; background:color-mix(in srgb,var(--stage-color) 22%,#eeece5); overflow:hidden; }
+.chunk-segment i { position:absolute; inset:0 auto 0 0; width:0; background:var(--stage-color); display:block; }
+.kind-dit { --stage-color:#347565; }
+.kind-previous { --stage-color:#8d8999; }
+.kind-lookahead { --stage-color:#c18d42; }
+.kind-vae { --stage-color:#d97757; }
+.kind-handoff { --stage-color:#77756d; }
+.chunk-ready-marker { position:absolute; top:-3px; height:22px; width:2px; transform:translateX(-1px); background:#6f7069; }
+.chunk-lane[data-phase="done"] .chunk-ready-marker { background:#347565; }
+.chunk-axis { display:flex; justify-content:space-between; margin-top:5px; color:var(--muted); font-size:10px; font-variant-numeric:tabular-nums; line-height:1.4; }
+.post .chunk-demo .chunk-parts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:5px 20px; margin:8px 0 0; padding:0; list-style:none; color:var(--muted); font-size:12px; line-height:1.4; }
+.post .chunk-demo .chunk-parts li { display:grid; grid-template-columns:7px minmax(0,1fr) auto; align-items:center; gap:7px; margin:0; padding:0; }
+.chunk-parts b { color:var(--ink); font-weight:500; font-variant-numeric:tabular-nums; }
+.chunk-dot { display:inline-block; flex:none; width:7px; height:7px; border-radius:2px; background:var(--stage-color); }
+.response-frame { margin:0; min-width:0; }
+.response-image-wrap { position:relative; aspect-ratio:1344/768; background:#e7e4db; border:1px solid #d7d2c6; border-radius:4px; overflow:hidden; }
+.response-frame img { display:block; width:100%; height:auto; visibility:hidden; }
+.response-frame video { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; visibility:hidden; }
+.response-pending { position:absolute; inset:0; display:grid; place-items:center; color:var(--muted); font-size:11px; }
+.chunk-lane[data-phase="done"] .response-frame img { visibility:visible; }
+.chunk-lane[data-phase="done"] .response-frame video[data-ready="true"] { visibility:visible; }
+.chunk-lane[data-phase="done"] .response-pending { visibility:hidden; }
+.post .chunk-demo .response-frame figcaption { margin:4px 0 0; font-size:10px; line-height:1.3; text-align:center; color:var(--muted); }
+.post .chunk-demo .chunk-demo-note { margin:16px 0 6px; font-size:12.5px; line-height:1.6; text-align:start; color:var(--muted); }
+.chunk-demo-scope { color:var(--muted); font-size:12px; line-height:1.65; }
+.chunk-demo-scope summary { cursor:pointer; }
+.post .chunk-demo .chunk-demo-scope p { margin:8px 0; font-size:12px; line-height:1.65; text-align:start; }
+.chunk-announcement { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+@media(max-width:860px) { .chunk-demo.wide { width:100%; max-width:100%; left:0; transform:none; } }
+@media(max-width:600px) {
+  .chunk-demo { padding:16px; }
+  .chunk-demo-heading { flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  .post .chunk-demo .chunk-demo-title { flex:1 0 100%; font-size:17px; }
+  .chunk-demo-actions { margin-left:auto; }
+  .chunk-phase { font-size:10px; max-width:140px; text-align:right; }
+  .chunk-lane-heading { gap:6px; font-size:14px; }
+  .chunk-total { min-width:51px; }
+  .chunk-lane-body { grid-template-columns:minmax(0,1fr) 86px; gap:12px; }
+  .chunk-dependency { height:42px; font-size:10px; }
+  .chunk-dependency span { bottom:6px; min-height:34px; }
+  .response-frame { margin-top:8px; }
+  .response-pending { font-size:9px; }
+  .post .chunk-demo .response-frame figcaption { font-size:9px; }
+  .post .chunk-demo .chunk-parts { grid-template-columns:1fr; gap:4px; }
+}
+
+/* Progressive enhancement: all recorded results remain readable without JS. */
+.stage-chart .stage-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
+.stage-chart .chart-title { margin:0; }
+.stage-chart .stage-controls { display:flex; flex:none; gap:6px; }
+.stage-chart .stage-controls[hidden] { display:none; }
+.stage-chart .stage-controls button { padding:5px 12px; border:1px solid var(--strong-line); border-radius:7px; background:transparent; color:var(--muted); font-family:var(--sans); font-size:12px; line-height:1.5; cursor:pointer; min-width:56px; }
+.stage-chart .stage-controls button:hover { color:var(--ink); background:var(--panel-2); }
+.stage-chart button:focus-visible { outline:2px solid var(--solarwm-gold-deep); outline-offset:3px; }
+.stage-chart .stage-readout { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:24px; align-items:center; min-height:136px; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:18px; }
+.stage-chart .stage-current { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.stage-chart .stage-count { font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums; }
+.stage-chart .stage-current strong { font-family:var(--sans); font-size:16px; font-weight:600; line-height:1.4; }
+.stage-chart .stage-detail { color:var(--muted); font-size:12px; line-height:1.5; min-height:36px; }
+.stage-chart .stage-stats { display:flex; gap:26px; align-items:start; }
+.stage-chart .stage-stats>span { display:flex; flex-direction:column; gap:4px; }
+.stage-chart .stage-stats strong { font-family:var(--sans); font-size:27px; font-weight:600; line-height:1.3; letter-spacing:-.6px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.stage-chart .stage-stats [data-stage-fps] { color:var(--solarwm-gold); min-width:77px; }
+.stage-chart .stage-stats [data-stage-ms] { min-width:122px; }
+.stage-chart .stage-stats small { color:var(--muted); font-size:11px; line-height:1.4; white-space:nowrap; }
+.stage-chart .stage-step { width:100%; padding:9px 0; margin:6px 0; border:0; border-radius:6px; background:none; color:var(--ink); text-align:left; font-family:var(--sans); cursor:pointer; grid-template-columns:260px minmax(0,1fr) 58px; gap:18px; }
+.stage-chart .stage-step:disabled { opacity:1; cursor:default; }
+.stage-chart .stage-step:hover { background:var(--solarwm-paper); }
+.stage-chart .stage-step .bar-label { font-size:13px; line-height:1.5; }
+.stage-chart .stage-step[aria-pressed="true"] .bar-label { font-weight:600; }
+.stage-chart .stage-step .bar { display:block; transform:scaleX(1); transform-origin:left; transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .2s; }
+.stage-chart[data-stage-ready] .stage-step[data-future="true"] .bar { transform:scaleX(0); }
+.stage-chart[data-stage-ready] .stage-step[data-future="true"] .bar-label,
+.stage-chart[data-stage-ready] .stage-step[data-future="true"] .bar-value { color:var(--faint); }
+.stage-chart .stage-step[aria-pressed="true"] .bar-label { color:var(--solarwm-gold-deep); }
+.stage-chart .axis { padding-left:278px; padding-right:76px; }
+.stage-chart .stage-status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+@media(max-width:860px) {
+  .stage-chart .stage-readout { grid-template-columns:1fr; gap:12px; }
+  .stage-chart .stage-current { min-height:104px; }
+  .stage-chart .stage-detail { min-height:0; }
+  .stage-chart .stage-stats { justify-content:space-between; gap:12px; }
+  .stage-chart .stage-step { grid-template-columns:210px minmax(0,1fr) 58px; }
+  .stage-chart .axis { padding-left:228px; }
+}
+@media(max-width:600px) {
+  .stage-chart .stage-heading { align-items:start; flex-direction:column; gap:10px; }
+  .stage-chart .stage-step { grid-template-columns:minmax(0,1fr) 48px; gap:6px 13px; padding:9px 0; }
+  .stage-chart .stage-step .bar-label { grid-column:1/-1; font-size:12px; }
+  .stage-chart .stage-stats strong { font-size:23px; }
+  .stage-chart .stage-stats [data-stage-ms] { min-width:105px; }
+  .stage-chart .stage-stats small { font-size:10px; }
+  .stage-chart .axis { padding-left:0; padding-right:61px; }
+}
+@media(prefers-reduced-motion:reduce) { .stage-chart .stage-step .bar { transition:none; } }
+@media print {
+  .stage-chart .stage-controls,.stage-chart .stage-readout { display:none; }
+  .stage-chart .stage-step .bar { transform:scaleX(1)!important; opacity:1!important; transition:none; }
+  .stage-chart .stage-step .bar-label,.stage-chart .stage-step .bar-value { color:var(--ink)!important; }
+}
+</style></head>
+<body id="top">
+<a class="skip-link" href="#article">跳到正文</a>
+<header class="topbar">
+  <a class="name" href="#top"><img class="team-logo" src="media/solarx-team-logo.png" width="40" height="40" alt="SolarX-Team"><span class="brand-label">SolarWM H3 <small>Real-time interaction</small></span></a>
+  <nav class="nav" aria-label="主导航">
+    <a href="#section-1">加速 DiT 的核心计算</a>
+    <div class="nav-item"><a href="#method">方法<svg viewBox="0 0 9 6" aria-hidden="true"><path d="m1 1 3.5 3.5L8 1"/></svg></a><div class="nav-sub"><a href="#section-2">第一阶段：编译完整模型</a><a href="#section-3">第二阶段：选择注意力后端（Attention Backend）</a><a href="#section-4">第三阶段：复用历史 K/V 拼接结果</a><a href="#section-5">第四阶段：DiT Denoise Graph + KV Refresh Graph</a></div></div><a href="#section-6">加速 VAE 解码</a>
+    <a href="#deployment">部署</a>
+    <a href="#section-9">总结</a><a href="#section-11">参考文献</a>
+  </nav>
+  <button class="toc-btn" type="button" aria-expanded="false" aria-controls="contents" aria-label="目录"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12M2 8h12M2 13h12"/></svg><span>目录</span></button>
+  <div class="segmented" aria-label="语言"><a data-language lang="en" href="index.html">EN</a><a data-language lang="zh-CN" href="zh.html" aria-current="page">中文</a></div>
+  <a class="gh" href="https://github.com/SolarX-Team/SolarWM-H3-Realtime" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.14.68-3.8-1.33-3.8-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.73 1.16 1.73 1.16 1 1.73 2.63 1.23 3.27.94.1-.73.4-1.23.71-1.51-2.5-.29-5.14-1.25-5.14-5.54 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.42.11-2.95 0 0 .94-.3 3.08 1.15A10.7 10.7 0 0 1 12 6.2c.95 0 1.9.13 2.8.38 2.14-1.45 3.08-1.15 3.08-1.15.6 1.53.23 2.67.1 2.95.73.78 1.16 1.78 1.16 3.01 0 4.3-2.64 5.24-5.16 5.52.41.35.77 1.03.77 2.08v3.1c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg></a>
+</header>
+<aside class="toc" id="contents"><nav aria-label="文章目录"><a class="" href="#section-1">加速 DiT 的核心计算</a><a class="sub" href="#section-2">第一阶段：编译完整模型</a><a class="sub" href="#section-3">第二阶段：选择注意力后端（Attention Backend）</a><a class="sub" href="#section-4">第三阶段：复用历史 K/V 拼接结果</a><a class="sub" href="#section-5">第四阶段：DiT Denoise Graph + KV Refresh Graph</a><a class="" href="#section-6">加速 VAE 解码</a><a class="" href="#deployment">实时交互结果</a><a class="" href="#section-9">总结</a><a class="" href="#section-11">参考文献</a><a class="" href="#citation">引用</a></nav></aside>
+<main><article class="post" id="article">
+  <header class="post-head post-header">
+    <p class="eyebrow">SolarWM H3</p>
+    <h1>SolarWM H3 Realtime Interaction</h1>
+    <p class="keywords">关键词：实时交互 · 流式生成</p>
+    <p class="byline"><button type="button" class="author-fold" aria-expanded="false" aria-controls="author-rest"><span class="author-names">杜壹华<span class="author-etal"> 等</span><span class="author-rest" id="author-rest" hidden>、黄俊超、陈博宏、刘耀阳、张梓欣、孔祥浩、闫栋宇、赵卓然、方桂安、陈雅静、錢湦鉅</span></span></button></p><p class="byline team">SolarX-Team, October 2026</p>
+  </header>
+  <p>实时交互的核心，是让世界模型及时响应用户的操作。围绕这一目标，我们对 SolarWM H3 <span class="cite">[<a href="#ref-1" aria-label="Reference 1" role="doc-biblioref">1</a>]</span> 的推理流程进行了分阶段优化：通过编译、注意力后端选择、历史缓存复用以及 CUDA Graph 重放，加速基于 MiniMax H3 <span class="cite">[<a href="#ref-2" aria-label="Reference 2" role="doc-biblioref">2</a>]</span> 的 DiT 计算。在此基础上，我们结合流式 VAE 解码，同时缩短了从动作输入到画面生成的时间。</p>
+<p>这套优化从固定输入形状的静态推理开始，分阶段先提升各个模块的稳态性能，再将加速结果带入交互式部署。借助动态编译和按形状缓存的 Graph，服务能够在支持范围内跨场景、跨提示词长度复用已完成的准备工作。最后还接入了基于 StreamRender-H3 <span class="cite">[<a href="#ref-8" aria-label="Reference 8" role="doc-biblioref">8</a>]</span> 解码器与权重适配的单潜变量流式版本 <span class="cite">[<a href="#ref-7" aria-label="Reference 7" role="doc-biblioref">7</a>]</span>，使动作对应的首帧不必等待下一生成块的潜变量，从而进一步缩短响应时间。</p>
+<p>最终，静态 DiT 的等效帧率由 <strong>7.09 提升至 31.49 FPS，吞吐率达到原来的 4.44 倍</strong>。计入 VAE 解码后，完整串行后端的稳态速度由 <strong>4.92 提升至 24.38 FPS，吞吐率达到原来的 4.95 倍</strong>。在一次动作响应测试中，对应首帧的后端就绪时间从约 <strong>6.90 秒缩短至 0.58 秒</strong>，不包含网络传输和浏览器显示。在当前网页部署的实测中，从按键按下到对应画面显示的延迟中位数为 <strong>1.15 秒</strong>，包含生成、传输与浏览器显示的完整过程。</p>
+<p>下面，我们先通过优化前后的对比视频，直观展示实时视频生成的提速效果，再用时间轴呈现从动作输入到首帧生成的后端响应过程。随后，逐阶段介绍如何减少重复计算与执行开销，并将这些优化应用于实时交互。</p>
+<figure class="wide realtime-comparison" id="real-speed-comparison">
+    <video data-auto-loop autoplay muted loop controls controlslist="nodownload" playsinline preload="metadata" poster="media/before-after-streamrender-en-poster.jpg" aria-label="Original versus deployed StreamRender, visualized at measured steady throughput"><source src="media/before-after-streamrender-en.mp4" type="video/mp4"></video>
+    <figcaption><span class="comparison-caption">后端稳态生成速度从 <strong>4.92 FPS 提升至 24.38 FPS，达到原来的 4.95 倍</strong>。两侧均展示对应的 102 帧片段，按各自实测的串行 DiT + VAE 稳态帧率匀速播放</span>
+    </figcaption></figure><div class="wide chunk-demo" id="chunk-time-demo" role="group" tabindex="0" data-ui="{&quot;title&quot;:&quot;从动作输入到首帧&quot;,&quot;groupLabel&quot;:&quot;后端动作响应对比，按 D 回放。&quot;,&quot;labels&quot;:{&quot;native&quot;:&quot;原始&quot;,&quot;optimized&quot;:&quot;优化&quot;},&quot;loading&quot;:&quot;正在加载&quot;,&quot;replay&quot;:&quot;回放动作&quot;,&quot;play&quot;:&quot;播放&quot;,&quot;pause&quot;:&quot;暂停&quot;,&quot;clock&quot;:&quot;回放时间&quot;,&quot;ready&quot;:&quot;等待回放&quot;,&quot;done&quot;:&quot;首帧已就绪&quot;,&quot;previous&quot;:&quot;等待 · 上一块解码&quot;,&quot;next&quot;:&quot;等待 · 下一块 DiT&quot;,&quot;dependency&quot;:&quot;等待下一块潜变量&quot;,&quot;independent&quot;:&quot;无需等待未来块&quot;,&quot;pending&quot;:&quot;等待首帧&quot;,&quot;frameCaption&quot;:&quot;就绪后按稳态帧率循环预览&quot;,&quot;imageAlt&quot;:&quot;当前动作对应的首帧&quot;,&quot;stagesLabel&quot;:&quot;实测处理阶段&quot;,&quot;previewLabel&quot;:&quot;从第 136 号帧开始，按实测稳态帧率循环播放，非逐帧出帧时间戳回放&quot;,&quot;paused&quot;:&quot;回放已暂停&quot;,&quot;unavailable&quot;:&quot;预览加载失败&quot;,&quot;started&quot;:&quot;已输入 D，正在按实际耗时回放后端处理过程。&quot;,&quot;completed&quot;:&quot;{label}的首帧在 {seconds} 秒时就绪。&quot;,&quot;pausedAnnouncement&quot;:&quot;切换标签页后已暂停回放。点击回放动作可重新开始。&quot;,&quot;error&quot;:&quot;无法加载本地预览帧，请刷新页面。计时数据仍可查看。&quot;,&quot;stageLabels&quot;:{&quot;native&quot;:{&quot;current_dit&quot;:&quot;当前块 DiT&quot;,&quot;previous_vae&quot;:&quot;上一块 VAE&quot;,&quot;handoff&quot;:&quot;循环交接&quot;,&quot;next_dit&quot;:&quot;下一块 DiT&quot;,&quot;response_vae&quot;:&quot;响应帧 VAE&quot;},&quot;optimized&quot;:{&quot;current_dit&quot;:&quot;当前块 DiT&quot;,&quot;response_vae&quot;:&quot;StreamRender 首帧&quot;}},&quot;noscript&quot;:&quot;关闭 JavaScript 时仍可查看计时数值，动画需要启用 JavaScript。&quot;,&quot;note&quot;:&quot;时间轴对比了优化前后的动作响应过程：从动作指令生效，到对应首帧在后端就绪。MiniMax H3 的原生解码器需要等待下一块潜变量，而基于 StreamRender-H3 [8](#ref-8) 的单潜变量适配版本 [7](#ref-7) 无需等待未来输入，即可解码当前块的首帧，让动作更早得到画面反馈。这里衡量的是首帧响应时间，而非整块 17 帧的生成耗时，不包含网络传输与浏览器显示。&quot;,&quot;scopeTitle&quot;:null,&quot;scope&quot;:[]}" aria-label="后端动作响应对比，按 D 回放。">
+    <div class="chunk-demo-heading">
+      <p class="chunk-demo-title">从动作输入到首帧</p>
+      <div class="chunk-demo-actions"><output class="chunk-clock" aria-label="回放时间">0.00 s</output><button type="button" class="chunk-toggle" disabled>播放</button><button type="button" class="chunk-replay" disabled><kbd>D</kbd><span class="chunk-button-label">正在加载</span></button></div>
+    </div>
+    <div class="chunk-lane" data-arm="native" data-total-ms="6897.945051" data-stages="[{&quot;key&quot;:&quot;current_dit&quot;,&quot;kind&quot;:&quot;dit&quot;,&quot;label&quot;:&quot;DiT · current chunk&quot;,&quot;start_ns&quot;:&quot;3561374863334281&quot;,&quot;end_ns&quot;:&quot;3561377276259755&quot;,&quot;start_ms&quot;:0,&quot;end_ms&quot;:2412.925474,&quot;duration_ms&quot;:2412.925474},{&quot;key&quot;:&quot;previous_vae&quot;,&quot;kind&quot;:&quot;previous&quot;,&quot;label&quot;:&quot;VAE · previous chunk&quot;,&quot;start_ns&quot;:&quot;3561377276259755&quot;,&quot;end_ns&quot;:&quot;3561378309906413&quot;,&quot;start_ms&quot;:2412.925474,&quot;end_ms&quot;:3446.572132,&quot;duration_ms&quot;:1033.646658},{&quot;key&quot;:&quot;handoff&quot;,&quot;kind&quot;:&quot;handoff&quot;,&quot;label&quot;:&quot;Loop handoff&quot;,&quot;start_ns&quot;:&quot;3561378309906413&quot;,&quot;end_ns&quot;:&quot;3561378309963172&quot;,&quot;start_ms&quot;:3446.572132,&quot;end_ms&quot;:3446.628891,&quot;duration_ms&quot;:0.056759},{&quot;key&quot;:&quot;next_dit&quot;,&quot;kind&quot;:&quot;lookahead&quot;,&quot;label&quot;:&quot;DiT · next chunk&quot;,&quot;start_ns&quot;:&quot;3561378309963172&quot;,&quot;end_ns&quot;:&quot;3561380722550680&quot;,&quot;start_ms&quot;:3446.628891,&quot;end_ms&quot;:5859.216399,&quot;duration_ms&quot;:2412.587508},{&quot;key&quot;:&quot;response_vae&quot;,&quot;kind&quot;:&quot;vae&quot;,&quot;label&quot;:&quot;VAE · response frame&quot;,&quot;start_ns&quot;:&quot;3561380722550680&quot;,&quot;end_ns&quot;:&quot;3561381761279332&quot;,&quot;start_ms&quot;:5859.216399,&quot;end_ms&quot;:6897.945051,&quot;duration_ms&quot;:1038.728652}]">
+      <div class="chunk-lane-heading"><strong>原始</strong><span class="chunk-phase">等待回放</span><span class="chunk-total">6.90 s</span></div>
+      <div class="chunk-lane-body"><div class="chunk-timing">
+        <div class="chunk-dependency "><span style="left:34.980352208665344%;width:49.961124646830704%">等待下一块潜变量</span></div>
+        <div class="chunk-track" aria-hidden="true">
+          <span class="chunk-segment kind-dit" data-stage="current_dit" title="当前块 DiT: 2412.925 ms" style="left:0%;width:34.980352208665344%"><i></i></span><span class="chunk-segment kind-previous" data-stage="previous_vae" title="上一块 VAE: 1033.647 ms" style="left:34.980352208665344%;width:14.984849116044371%"><i></i></span><span class="chunk-segment kind-handoff" data-stage="handoff" title="循环交接: 0.057 ms" style="left:49.96520132470971%;width:0.0008228392598136399%"><i></i></span><span class="chunk-segment kind-lookahead" data-stage="next_dit" title="下一块 DiT: 2412.588 ms" style="left:49.96602416396952%;width:34.97545269152653%"><i></i></span><span class="chunk-segment kind-vae" data-stage="response_vae" title="响应帧 VAE: 1038.729 ms" style="left:84.94147685549605%;width:15.058523144503955%"><i></i></span>
+          <span class="chunk-ready-marker" style="left:100%"></span>
+        </div>
+        <div class="chunk-axis" aria-hidden="true"><span>0 s</span><span>6.90 s</span></div>
+      </div><figure class="response-frame"><div class="response-image-wrap"><img src="media/response-native-motion-v1.jpg" alt="原始: 当前动作对应的首帧" width="448" height="256" loading="eager"><video muted loop playsinline preload="auto" width="448" height="256" poster="media/response-native-motion-v1.jpg" data-preview-duration="10.357999" aria-label="原始: 从第 136 号帧开始，按实测稳态帧率循环播放，非逐帧出帧时间戳回放"><source src="media/response-native-motion-v1.mp4" type="video/mp4"></video><span class="response-pending">等待首帧</span></div><figcaption>就绪后按稳态帧率循环预览</figcaption></figure></div>
+      <ol class="chunk-parts" aria-label="原始 实测处理阶段"><li class="kind-dit"><i class="chunk-dot"></i><span>当前块 DiT</span><b>2.41 s</b></li><li class="kind-previous"><i class="chunk-dot"></i><span>上一块 VAE</span><b>1.03 s</b></li><li class="kind-lookahead"><i class="chunk-dot"></i><span>下一块 DiT</span><b>2.41 s</b></li><li class="kind-vae"><i class="chunk-dot"></i><span>响应帧 VAE</span><b>1.04 s</b></li></ol>
+    </div><div class="chunk-lane" data-arm="optimized" data-total-ms="580.662471" data-stages="[{&quot;key&quot;:&quot;current_dit&quot;,&quot;kind&quot;:&quot;dit&quot;,&quot;label&quot;:&quot;DiT · current chunk&quot;,&quot;start_ns&quot;:&quot;3598949304554334&quot;,&quot;end_ns&quot;:&quot;3598949860690263&quot;,&quot;start_ms&quot;:0,&quot;end_ms&quot;:556.135929,&quot;duration_ms&quot;:556.135929},{&quot;key&quot;:&quot;response_vae&quot;,&quot;kind&quot;:&quot;vae&quot;,&quot;label&quot;:&quot;StreamRender · first frame&quot;,&quot;start_ns&quot;:&quot;3598949860690263&quot;,&quot;end_ns&quot;:&quot;3598949885216805&quot;,&quot;start_ms&quot;:556.135929,&quot;end_ms&quot;:580.662471,&quot;duration_ms&quot;:24.526542}]">
+      <div class="chunk-lane-heading"><strong>优化</strong><span class="chunk-phase">等待回放</span><span class="chunk-total">0.58 s</span></div>
+      <div class="chunk-lane-body"><div class="chunk-timing">
+        <div class="chunk-dependency no-lookahead">无需等待未来块</div>
+        <div class="chunk-track" aria-hidden="true">
+          <span class="chunk-segment kind-dit" data-stage="current_dit" title="当前块 DiT: 556.136 ms" style="left:0%;width:8.062342116212953%"><i></i></span><span class="chunk-segment kind-vae" data-stage="response_vae" title="StreamRender 首帧: 24.527 ms" style="left:8.062342116212953%;width:0.35556302375073817%"><i></i></span>
+          <span class="chunk-ready-marker" style="left:8.41790513996369%"></span>
+        </div>
+        <div class="chunk-axis" aria-hidden="true"><span>0 s</span><span>6.90 s</span></div>
+      </div><figure class="response-frame"><div class="response-image-wrap"><img src="media/response-optimized-motion-v1.jpg" alt="优化: 当前动作对应的首帧" width="448" height="256" loading="eager"><video muted loop playsinline preload="auto" width="448" height="256" poster="media/response-optimized-motion-v1.jpg" data-preview-duration="2.092" aria-label="优化: 从第 136 号帧开始，按实测稳态帧率循环播放，非逐帧出帧时间戳回放"><source src="media/response-optimized-motion-v1.mp4" type="video/mp4"></video><span class="response-pending">等待首帧</span></div><figcaption>就绪后按稳态帧率循环预览</figcaption></figure></div>
+      <ol class="chunk-parts" aria-label="优化 实测处理阶段"><li class="kind-dit"><i class="chunk-dot"></i><span>当前块 DiT</span><b>556 ms</b></li><li class="kind-vae"><i class="chunk-dot"></i><span>StreamRender 首帧</span><b>25 ms</b></li></ol>
+    </div>
+    <p class="chunk-demo-note">时间轴对比了优化前后的动作响应过程：从动作指令生效，到对应首帧在后端就绪。MiniMax H3 的原生解码器需要等待下一块潜变量，而基于 StreamRender-H3 <span class="cite">[<a href="#ref-8" aria-label="Reference 8" role="doc-biblioref">8</a>]</span> 的单潜变量适配版本 <span class="cite">[<a href="#ref-7" aria-label="Reference 7" role="doc-biblioref">7</a>]</span> 无需等待未来输入，即可解码当前块的首帧，让动作更早得到画面反馈。这里衡量的是首帧响应时间，而非整块 17 帧的生成耗时，不包含网络传输与浏览器显示。</p>
+    
+    <span class="chunk-announcement" role="status" aria-live="polite"></span>
+    <noscript><p>关闭 JavaScript 时仍可查看计时数值，动画需要启用 JavaScript。</p></noscript>
+  </div><section class="article-section" id="section-1"><h2>加速 DiT 的核心计算</h2><p>要缩短动作到画面的响应时间，我们先从计算开销最大的 DiT 入手。DiT 根据图像、文本和动作条件流式生成视频潜变量，再由 VAE 将其解码为画面。</p>
+<p>我们首先固定分辨率、提示词长度等输入形状，逐步优化编译、注意力计算、历史缓存与计算调度。这样可以先明确每一步优化的效果，再将这些加速能力扩展到需要切换场景和提示词的实时交互服务。</p>
+<p>一次完整生成块（chunk）产出 5 个潜变量（latent），对应保留 17 个视频帧。计算过程包含<strong>四次去噪前向计算，以及一次历史键值缓存更新（KV refresh）</strong>。缓存更新为后续生成准备干净的上下文，因此也必须计入每块耗时。</p>
+<p>为便于比较，我们将完整 DiT 耗时换算为等效帧率：<code>DiT FPS = 17 / (每块耗时（毫秒）/ 1000)</code>。下方动态图按优化阶段依次展开，展示 DiT 这一环节的流式生成速度如何从 <strong>7.09 FPS 提升至 31.49 FPS</strong>。下表汇总各阶段的耗时、帧率与主要改动。</p>
+<figure class="chart wide stage-chart" data-stage-chart data-lang="zh" aria-label="DiT 分阶段提速">
+    <div class="stage-heading"><div class="chart-title">DiT 分阶段提速：从 7.09 到 31.49 FPS</div><div class="stage-controls" hidden><button type="button" data-stage-toggle>播放</button><button type="button" data-stage-replay>重播</button></div></div>
+    <div class="stage-readout">
+      <div class="stage-current"><span class="stage-count" data-stage-count>已加入 4 / 4 项优化</span><strong data-stage-name>DiT Denoise Graph + KV Refresh Graph</strong><span class="stage-detail" data-stage-detail>重放去噪与 KV 缓存更新，复用固定缓冲区</span></div>
+      <div class="stage-stats"><span><strong data-stage-fps>31.49</strong><small>DiT FPS</small></span><span><strong data-stage-ms>539.91</strong><small>ms / 生成块</small></span><span><strong data-stage-ratio>4.44×</strong><small>相对基线吞吐率</small></span></div>
+    </div>
+    <div class="bars"><button type="button" class="bar-row stage-step" data-stage-index="0" data-fps="7.093717844620371" data-ms="2396.486633999999" data-name="原生基线" data-detail="原始执行路径" aria-pressed="false" aria-label="原生基线: 7.09 DiT FPS, 2,396.49 毫秒 / 块" disabled><span class="bar-label">原生基线</span><span class="bar-track" style="--tick:14.285714285714286%" aria-hidden="true"><span class="bar color-0" style="width:20.267765270343915%"></span></span><strong class="bar-value">7.09</strong></button><button type="button" class="bar-row stage-step" data-stage-index="1" data-fps="16.399610007599147" data-ms="1036.610016465187" data-name="Full-model Compile" data-detail="编译完整的 50 层前向计算" aria-pressed="false" aria-label="Full-model Compile: 16.40 DiT FPS, 1,036.61 毫秒 / 块" disabled><span class="bar-label">+ Full-model Compile</span><span class="bar-track" style="--tick:14.285714285714286%" aria-hidden="true"><span class="bar color-1" style="width:46.85602859314042%"></span></span><strong class="bar-value">16.40</strong></button><button type="button" class="bar-row stage-step" data-stage-index="2" data-fps="22.16414994743131" data-ms="767.0043760000008" data-name="Attention Backend" data-detail="视频查询用 SDPA，其余分段保留 FlashAttention" aria-pressed="false" aria-label="Attention Backend: 22.16 DiT FPS, 767.00 毫秒 / 块" disabled><span class="bar-label">+ Attention Backend</span><span class="bar-track" style="--tick:14.285714285714286%" aria-hidden="true"><span class="bar color-2" style="width:63.3261427069466%"></span></span><strong class="bar-value">22.16</strong></button><button type="button" class="bar-row stage-step" data-stage-index="3" data-fps="23.188849574925953" data-ms="733.1109697818756" data-name="历史 K/V 拼接复用" data-detail="复用预先整理的历史键和值" aria-pressed="false" aria-label="历史 K/V 拼接复用: 23.19 DiT FPS, 733.11 毫秒 / 块" disabled><span class="bar-label">+ 历史 K/V 拼接复用</span><span class="bar-track" style="--tick:14.285714285714286%" aria-hidden="true"><span class="bar color-3" style="width:66.25385592835985%"></span></span><strong class="bar-value">23.19</strong></button><button type="button" class="bar-row stage-step" data-stage-index="4" data-fps="31.48658369416267" data-ms="539.912496227771" data-name="DiT Denoise Graph + KV Refresh Graph" data-detail="重放去噪与 KV 缓存更新，复用固定缓冲区" aria-pressed="true" aria-label="DiT Denoise Graph + KV Refresh Graph: 31.49 DiT FPS, 539.91 毫秒 / 块" disabled><span class="bar-label">+ DiT Denoise Graph + KV Refresh Graph</span><span class="bar-track" style="--tick:14.285714285714286%" aria-hidden="true"><span class="bar color-4" style="width:89.96166769760764%"></span></span><strong class="bar-value">31.49</strong></button></div>
+    <div class="axis" aria-hidden="true"><div><span style="left:0%">0</span><span style="left:14.285714285714285%">5</span><span style="left:28.57142857142857%">10</span><span style="left:42.857142857142854%">15</span><span style="left:57.14285714285714%">20</span><span style="left:71.42857142857143%">25</span><span style="left:85.71428571428571%">30</span><span style="left:100%">35</span></div></div>
+    <span class="stage-status" role="status" aria-live="polite" aria-atomic="true"></span>
+  </figure><div class="table-scroll wide" tabindex="0" role="region" aria-label="阶段结果，可横向滚动"><table><thead><tr><th scope="col">优化阶段</th><th scope="col" class="numeric">每块耗时</th><th scope="col" class="numeric">DiT 等效帧率</th><th scope="col">主要改动</th></tr></thead><tbody><tr><th scope="row">原生基线</th><td class="numeric">2,396.49 ms</td><td class="numeric">7.09</td><td>原始执行路径</td></tr><tr><th scope="row">+ Full-model Compile</th><td class="numeric">1,036.61 ms</td><td class="numeric">16.40</td><td>使用 TorchInductor 编译完整模型</td></tr><tr><th scope="row">+ Attention Backend</th><td class="numeric">767.00 ms</td><td class="numeric">22.16</td><td>视频查询使用 SDPA，其余分段保留 FlashAttention</td></tr><tr><th scope="row">+ 历史 K/V 拼接复用</th><td class="numeric">733.11 ms</td><td class="numeric">23.19</td><td>复用预先整理的历史 K/V</td></tr><tr><th scope="row">+ DiT Denoise Graph + KV Refresh Graph</th><td class="numeric">539.91 ms</td><td class="numeric">31.49</td><td>通过固定缓冲区重放去噪与缓存更新</td></tr></tbody></table></div></section><section class="article-section" id="section-2"><span id="method" aria-hidden="true"></span><h3>第一阶段：编译完整模型</h3><p>DiT 的执行成本不只来自大规模矩阵乘法。归一化、激活、逐元素运算和张量变换分布在 50 层网络中，并随着每块的多次前向计算反复执行。逐算子运行时，这些操作需要各自调度，还会产生供后续算子读取的中间结果。单个操作的开销不大，放进完整生成循环后却不可忽略。</p>
+<p>我们使用 <strong><code>torch.compile</code> 和 TorchInductor</strong> <span class="cite">[<a href="#ref-3" aria-label="Reference 3" role="doc-biblioref">3</a>]</span> 编译完整的 50 层前向计算，并设置 <code>fullgraph=True</code>，要求这条前向路径完整进入编译图。这样，编译器可以在可融合的计算之间消除不必要的中间读写，并减少 Python 层的逐算子调度。这里的“完整模型编译”并不是把整个模型变成一个巨大的 GPU 内核，而是让编译器看到完整前向中的计算关系，再为不同部分生成合适的执行代码。</p>
+<p>编译结果的复用还取决于输入形状。历史上下文在启动阶段逐步增长，进入稳态后才保持稳定。去噪与 KV 缓存更新也不是同一条计算路径。因此，我们按这些形状和计算阶段准备相应的编译入口，在测量前完成预热。生成循环复用的是已编译的程序，噪声、相机条件和历史内容仍随每次调用更新。</p>
+<p><strong>结果：每块 1,036.61 ms，对应 16.40 DiT FPS。</strong> 这一阶段在不改变模型结构和生成步数的前提下，减少了完整前向中的执行开销。它也明确了编译的边界：编译器能够优化算子之间的组织方式，但被调用的注意力实现是否适合当前输入，仍需要单独判断。</p>
+</section><section class="article-section" id="section-3"><h3>第二阶段：选择注意力后端（Attention Backend）</h3><p>我们分析了编译后的注意力计算，并在完整 DiT 推理中比较不同后端。SolarWM-H3 将条件、音频和当前视频的查询分组计算，其中视频查询需要读取更长的历史上下文。实测发现，原生统一使用的 FlashAttention 并非对所有分组都最合适：视频查询组改用 SDPA 后，完整推理更快。</p>
+<p>因此，我们仅将<strong>视频查询组切换到 PyTorch SDPA</strong> <span class="cite">[<a href="#ref-4" aria-label="Reference 4" role="doc-biblioref">4</a>]</span>，条件与音频组保留 <strong>FlashAttention</strong> <span class="cite">[<a href="#ref-5" aria-label="Reference 5" role="doc-biblioref">5</a>]</span>。运行时追踪确认，SDPA 在这次测试中实际调用的是 <strong>cuDNN Attention</strong>。这一调整保留了原有的上下文范围、位置编码和相机条件，只改变注意力的计算实现。</p>
+<p><strong>结果：每块 767.00 ms，对应 22.16 DiT FPS。</strong> 相比同阶段每块 1,051.29 ms 的编译对照，耗时降低约 <strong>27%</strong>。</p>
+</section><section class="article-section" id="section-4"><h3>第三阶段：复用历史 K/V 拼接结果</h3><p>分析编译后的执行过程，我们发现：原始 KV 缓存虽然保存了历史键和值，但每次 Attention 前仍需将各个历史块重新拼接。在当前块的四次去噪之间，历史内容并未变化，这些反复执行的拼接带来了不必要的内存分配和数据拷贝。</p>
+<p>我们将历史 K/V 的整理移到<strong>缓存更新时</strong>：按层提前拼好下一块需要的历史张量，供其四次去噪直接复用。历史窗口更新后再重新准备，前缀与当前块仍按需组装。优化不改变缓存内容和上下文范围，只减少相同数据的重复整理。</p>
+<p><strong>结果：每块 733.11 ms，对应 23.19 DiT FPS。</strong> 直接收益来自减少重复拼接及其内存开销。预先整理好的历史张量，也便于后续接入 <strong>CUDA Graph 的固定输入缓冲区</strong>，为 Graph 重放准备数据。</p>
+</section><section class="article-section" id="section-5"><h3>第四阶段：DiT Denoise Graph + KV Refresh Graph</h3><p>经过编译、注意力后端和历史 K/V 复用优化，单次前向已经明显加快，但 CPU 仍需逐一发起 GPU 内核调用。稳态生成反复执行相同结构的计算，任务提交却仍在每次前向中从头进行。这些开销随着每块的多次去噪与缓存更新不断累积，无法仅靠加快 GPU 内核来消除。</p>
+<p>我们使用 <strong>CUDA Graphs</strong> <span class="cite">[<a href="#ref-6" aria-label="Reference 6" role="doc-biblioref">6</a>]</span> 记录内核调用及其依赖关系，将逐个提交计算任务改为重放已捕获的执行路径。捕获范围同时覆盖<strong>DiT 去噪与 KV 缓存更新</strong>。后者需要在去噪后的潜变量上再执行一次前向，为后续生成建立历史上下文，因此同样值得加速。一个稳态生成块的四次去噪和一次 KV refresh，都通过各自的 Graph 执行。</p>
+<p>进入稳态后，历史窗口大小和计算形状保持稳定，为 Graph 复用提供了条件。完成预热与捕获后，每次重放只需更新噪声、时间步、相机条件和历史数据，而不必重新组织整段计算。<strong>复用的是执行路径，而不是输入内容</strong>，新的控制动作仍会随相机条件进入当前块的生成。</p>
+<p><strong>结果：每块 539.91 ms，对应 31.49 DiT FPS。</strong> 本阶段通过 Graph 重放减少了 CPU 的逐内核提交与重复调度，在不减少去噪步数、不省略缓存更新的前提下，进一步缩短了每块的生成时间。</p>
+</section><section class="article-section" id="section-6"><h2>加速 VAE 解码</h2><p>VAE 的延迟需要从两个方面理解：<strong>执行一次解码有多快，以及解码所需的输入何时才能凑齐</strong>。前者是计算效率问题，后者由时间窗口决定。两者都会影响动作对应的画面何时出现，但不能用同一种优化解决。</p>
+<p>对于计算效率，我们先编译原生 H3 VAE 的完整解码路径，使用 <code>fullgraph=True</code> 和 <code>dynamic=False</code>。其权重、注意力后端、空间分块方式，以及 7 个潜变量的窗口、5 个潜变量的推进步长和 2 个潜变量的重叠均保持不变。固定窗口为编译器提供了稳定的计算形状，可以减少解码过程中的逐算子执行开销。</p>
+<figure class="chart wide vae-chart stage-chart" data-stage-chart data-lang="zh" data-fps-unit="VAE FPS" aria-label="原生 VAE 解码等效帧率">
+    <div class="stage-heading"><div class="chart-title">VAE 解码提速：从 20.68 到 37.71 FPS</div><div class="stage-controls" hidden><button type="button" data-stage-toggle>播放</button><button type="button" data-stage-replay>重播</button></div></div>
+    <div class="stage-readout">
+      <div class="stage-current"><span class="stage-count" data-stage-count>已加入 1 / 1 项优化</span><strong data-stage-name>Full-model Compile</strong><span class="stage-detail" data-stage-detail>编译完整解码路径</span></div>
+      <div class="stage-stats"><span><strong data-stage-fps>37.71</strong><small>VAE FPS</small></span><span><strong data-stage-ms>450.84</strong><small>ms / 5 潜变量</small></span><span><strong data-stage-ratio>1.82×</strong><small>相对基线吞吐率</small></span></div>
+    </div>
+    <div class="bars"><button type="button" class="bar-row stage-step" data-stage-index="0" data-fps="20.684536483872144" data-ms="821.87" data-name="原生 VAE" data-detail="原始逐算子解码" aria-pressed="false" aria-label="原生 VAE: 20.68 VAE FPS, 821.87 毫秒 / 5 潜变量" disabled><span class="bar-label">原生 VAE</span><span class="bar-track" style="--tick:12.5%" aria-hidden="true"><span class="bar color-0" style="width:51.71134120968036%"></span></span><strong class="bar-value">20.68</strong></button><button type="button" class="bar-row stage-step" data-stage-index="1" data-fps="37.70739064856712" data-ms="450.84" data-name="Full-model Compile" data-detail="编译完整解码路径" aria-pressed="true" aria-label="Full-model Compile: 37.71 VAE FPS, 450.84 毫秒 / 5 潜变量" disabled><span class="bar-label">+ Full-model Compile</span><span class="bar-track" style="--tick:12.5%" aria-hidden="true"><span class="bar color-4" style="width:94.26847662141779%"></span></span><strong class="bar-value">37.71</strong></button></div>
+    <div class="axis" aria-hidden="true"><div><span style="left:0%">0</span><span style="left:12.5%">5</span><span style="left:25%">10</span><span style="left:37.5%">15</span><span style="left:50%">20</span><span style="left:62.5%">25</span><span style="left:75%">30</span><span style="left:87.5%">35</span><span style="left:100%">40</span></div></div>
+    <span class="stage-status" role="status" aria-live="polite" aria-atomic="true"></span>
+  </figure><div class="table-scroll wide" tabindex="0" role="region" aria-label="阶段结果，可横向滚动"><table><thead><tr><th scope="col">原生 VAE 配置</th><th scope="col" class="numeric">每推进 5 个潜变量的耗时</th><th scope="col" class="numeric">VAE 等效帧率</th></tr></thead><tbody><tr><th scope="row">未编译解码器</th><td class="numeric">821.87 ms</td><td class="numeric">20.68</td></tr><tr><th scope="row">编译后解码器</th><td class="numeric">450.84 ms</td><td class="numeric">37.71</td></tr></tbody></table></div><p>如上表所示，独立解码测试中，<strong>吞吐率达到原来的 1.823 倍，耗时降低 45.14%</strong>。与此同时，输入等待还有另一层约束。DiT 每块生成 5 个潜变量，原生解码窗口却需要 7 个：为凑齐后续的 2 个潜变量，当前画面的解码需要等待下一块 DiT 生成。即使把 VAE 内核进一步加速，这段由未来输入依赖造成的等待仍然存在。</p>
+<p>实时部署所用的基础因果解码器与蒸馏权重来自 NVIDIA 的 <strong>StreamRender-H3</strong> <span class="cite">[<a href="#ref-8" aria-label="Reference 8" role="doc-biblioref">8</a>]</span>。我们接入的是团队流式解码工作 <span class="cite">[<a href="#ref-7" aria-label="Reference 7" role="doc-biblioref">7</a>]</span> 在这些权重上适配的<strong>单潜变量解码版本</strong>，利用已经到达的潜变量与历史状态推进解码，不再为了当前块的首帧等待下一块输入。DiT 仍按块输出 5 个潜变量，VAE 则以单潜变量为单位推进解码。这项调整并未改变 DiT 的分块生成方式。文章开头使用的正是这条部署路径，它与上表中的编译版原生 VAE 权重和执行方式不同，不能把两者的计时当作同一配置。</p>
+</section><section class="article-section" id="deployment"><h2>实时交互结果</h2><span id="section-7" aria-hidden="true"></span><span id="section-8" aria-hidden="true"></span><p>我们在保留前述 DiT 加速方法的基础上，为提示词长度启用<strong>动态形状编译</strong>，使不同长度提示词能够共享编译结果。去噪与 KV refresh Graph 则按输入形状缓存，命中时直接复用，减少切换场景时的重复准备。接入 <strong>StreamRender 单潜变量流式解码器</strong> <span class="cite">[<a href="#ref-8" aria-label="Reference 8" role="doc-biblioref">8</a>]</span><span class="cite">[<a href="#ref-7" aria-label="Reference 7" role="doc-biblioref">7</a>]</span> 后，串行 DiT + VAE 后端的稳态生成速度达到 <strong>24.38 FPS，吞吐率为原始串行路径的 4.95 倍</strong>。单潜变量解码还消除了等待下一块 DiT 的依赖，使一次动作对应首帧的后端就绪时间缩短至约 <strong>0.58 秒</strong>。在当前网页部署的实测中，从按键按下到对应画面显示的延迟中位数为 <strong>1.15 秒</strong>，包含生成、传输和浏览器显示的完整过程。</p>
+<figure class="wide interaction-demo" id="interaction-demo">
+  <video autoplay muted controls playsinline preload="metadata" poster="media/interaction-demo-poster.jpg" width="1188" height="1080" aria-label="SolarWM H3 实时交互演示"><source src="media/interaction-demo.mp4" type="video/mp4"></video>
+  <figcaption>实时交互演示</figcaption>
+</figure></section><section class="article-section" id="section-9"><h2>总结</h2><p>围绕 SolarWM H3 的实时交互，我们分阶段优化了 DiT 的推理性能。完整模型编译与注意力后端选择提升了计算效率，历史 K/V 拼接复用与 CUDA Graph 重放减少了重复开销，最终将 DiT 的等效帧率从 <strong>7.09 提升至 31.49 FPS，吞吐率达到原来的 4.44 倍</strong>。</p>
+<p>结合 <strong>StreamRender 单潜变量流式解码器</strong> <span class="cite">[<a href="#ref-8" aria-label="Reference 8" role="doc-biblioref">8</a>]</span><span class="cite">[<a href="#ref-7" aria-label="Reference 7" role="doc-biblioref">7</a>]</span> 后，串行 DiT + VAE 后端的稳态生成速度从 <strong>4.92 提升至 24.38 FPS，吞吐率达到原来的 4.95 倍</strong>。单潜变量解码还消除了首帧对下一生成块的等待。在本文记录的一次动作响应测试中，从动作被后端采纳到对应首帧就绪的时间，由约 <strong>6.90 秒缩短至 0.58 秒</strong>。</p>
+<p>面向实时部署，我们为提示词长度启用动态形状编译，并按输入形状缓存去噪与 KV refresh Graph，减少切换时的重复准备。在当前网页部署的实测中，从按键按下到对应画面显示的延迟中位数为 <strong>1.15 秒</strong>，包含生成、传输与浏览器显示的完整过程。从计算提速、流式解码到部署复用，这些优化共同缩短了操作与画面之间的等待，让世界模型更适合实时交互。</p>
+</section><section class="article-section" id="section-11"><h2>参考文献</h2><ol class="reference-list"><li id="ref-1" role="doc-biblioentry"><span class="ref-number">[1]</span><span class="ref-body">J. Huang, G. Fang, S. Qian, et al. <span class="ref-title">SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models.</span> arXiv:2609.02886, 2026. <a href="https://arxiv.org/abs/2609.02886" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2609.02886</a></span></li><li id="ref-2" role="doc-biblioentry"><span class="ref-number">[2]</span><span class="ref-body">MiniMax. <span class="ref-title">MiniMax H3.</span> Official model and inference repository. <a href="https://github.com/MiniMax-AI/MiniMax-H3" target="_blank" rel="noopener noreferrer">github.com/MiniMax-AI/MiniMax-H3</a></span></li><li id="ref-3" role="doc-biblioentry"><span class="ref-number">[3]</span><span class="ref-body">PyTorch. <span class="ref-title">torch.compile.</span> API documentation. <a href="https://docs.pytorch.org/docs/stable/generated/torch.compile.html" target="_blank" rel="noopener noreferrer">PyTorch documentation</a></span></li><li id="ref-4" role="doc-biblioentry"><span class="ref-number">[4]</span><span class="ref-body">PyTorch. <span class="ref-title">torch.nn.functional.scaled_dot_product_attention.</span> API documentation. <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html" target="_blank" rel="noopener noreferrer">PyTorch documentation</a></span></li><li id="ref-5" role="doc-biblioentry"><span class="ref-number">[5]</span><span class="ref-body">Dao-AILab. <span class="ref-title">FlashAttention.</span> Official implementation. <a href="https://github.com/Dao-AILab/flash-attention" target="_blank" rel="noopener noreferrer">github.com/Dao-AILab/flash-attention</a></span></li><li id="ref-6" role="doc-biblioentry"><span class="ref-number">[6]</span><span class="ref-body">PyTorch. <span class="ref-title">CUDA semantics: CUDA graphs.</span> Documentation. <a href="https://docs.pytorch.org/docs/stable/notes/cuda.html#cuda-graphs" target="_blank" rel="noopener noreferrer">PyTorch CUDA Graph documentation</a></span></li><li id="ref-7" role="doc-biblioentry"><span class="ref-number">[7]</span><span class="ref-body">B. Chen, Y. Chen, Y. Du, J. Huang, G. Fang, and S. Qian. <span class="ref-title">H3 Streaming VAE Decoder: Training-Free Streaming without Future Latents.</span> SolarX-Team, October 2026. <a href="https://solarx-team.github.io/H3-Streaming-VAE-Decoder/" target="_blank" rel="noopener noreferrer">H3 Streaming VAE Decoder</a></span></li><li id="ref-8" role="doc-biblioentry"><span class="ref-number">[8]</span><span class="ref-body">Y. Lu, T. Ye, Y. Li, S. Xue, H. Liu, S. Han, and E. Xie. <span class="ref-title">StreamRender-H3: Interactive Coding Worlds with Real-time Streaming Diffusion Render.</span> NVIDIA Research, 2026. Project page. <a href="https://nvlabs.github.io/Sana/Sol-Engine/StreamRender-H3/" target="_blank" rel="noopener noreferrer">StreamRender-H3</a></span></li><li id="ref-9" role="doc-biblioentry"><span class="ref-number">[9]</span><span class="ref-body">Y. Li, J. Chen, H. Li, H. Liu, J. Yu, L. Zhu, P. Luo, S. Han, and E. Xie. <span class="ref-title">Sol Video Inference Engine: Agent-Native Full-Stack Acceleration Framework for Efficient Video Generation.</span> arXiv:2606.23743, 2026. <a href="https://arxiv.org/abs/2606.23743" target="_blank" rel="noopener noreferrer">arxiv.org/abs/2606.23743</a></span></li></ol></section><section class="article-section" id="citation"><h2>引用</h2><div class="bib"><button class="copy" type="button" data-copy-label="复制">复制</button><pre tabindex="0" aria-label="BibTeX"><code>@misc{du2026acceleratingsolarwmh3,
+  title  = {SolarWM H3 Realtime Interaction},
+  author = {Du, Yihua and Huang, Junchao and Chen, Bohong and
+            Liu, Yaoyang and Zhang, Zixin and Kong, Xianghao and
+            Yan, Dongyu and Zhao, Zhuoran and Fang, Guian and
+            Chen, Yajing and Qian, Shengju},
+  year   = {2026},
+  month  = {oct},
+  note   = {SolarX-Team technical blog},
+  url    = {https://solarx-team.github.io/SolarWM-H3-Realtime/}
+}</code></pre><span class="copy-status" role="status"></span></div></section>
+</article></main>
+<footer>
+  <p class="authors">杜壹华、黄俊超、陈博宏、刘耀阳、张梓欣、孔祥浩、闫栋宇、赵卓然、方桂安、陈雅静、錢湦鉅</p>
+  <p class="authors">SolarX-Team</p>
+  <a class="repo" href="https://github.com/SolarX-Team/SolarWM-H3-Realtime" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.14.68-3.8-1.33-3.8-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.73 1.16 1.73 1.16 1 1.73 2.63 1.23 3.27.94.1-.73.4-1.23.71-1.51-2.5-.29-5.14-1.25-5.14-5.54 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.42.11-2.95 0 0 .94-.3 3.08 1.15A10.7 10.7 0 0 1 12 6.2c.95 0 1.9.13 2.8.38 2.14-1.45 3.08-1.15 3.08-1.15.6 1.53.23 2.67.1 2.95.73.78 1.16 1.78 1.16 3.01 0 4.3-2.64 5.24-5.16 5.52.41.35.77 1.03.77 2.08v3.1c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>github.com/SolarX-Team/SolarWM-H3-Realtime</a>
+</footer>
+<script>const sections=[...document.querySelectorAll('.article-section')];
+const toc=[...document.querySelectorAll('.toc a')];
+const languageLinks=[...document.querySelectorAll('[data-language]')];
+function syncSection(){
+  let current=sections[0];
+  for(const section of sections)if(section.getBoundingClientRect().top<=145)current=section;
+  toc.forEach(a=>a.classList.toggle('active',a.hash===`#${current.id}`));
+  languageLinks.forEach(a=>{
+    const base=a.getAttribute('lang')==='en'?'index.html':'zh.html';
+    a.href=window.scrollY>200?`${base}#${current.id}`:base;
+  });
+}
+let scheduled=false;
+addEventListener('scroll',()=>{
+  if(!scheduled){scheduled=true;requestAnimationFrame(()=>{syncSection();scheduled=false;});}
+},{passive:true});
+addEventListener('load',syncSection);
+addEventListener('hashchange',syncSection);
+document.querySelectorAll('details a').forEach(a=>a.addEventListener('click',()=>a.closest('details').removeAttribute('open')));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('details[open]').forEach(x=>x.removeAttribute('open'));});
+document.addEventListener('click',e=>{document.querySelectorAll('.nav-menu[open]').forEach(x=>{if(!x.contains(e.target))x.removeAttribute('open');});});
+syncSection();
+
+// Hover like the reference blog, with keyboard and touch equivalents.
+(() => {
+  const fold = document.querySelector('.author-fold');
+  if (!fold) return;
+  const rest = fold.querySelector('.author-rest');
+  const etal = fold.querySelector('.author-etal');
+  let hovered = false, focused = false, pinned = false;
+  function sync() {
+    const expanded = hovered || focused || pinned;
+    rest.hidden = !expanded;
+    etal.hidden = expanded;
+    fold.setAttribute('aria-expanded', String(expanded));
+  }
+  fold.addEventListener('pointerenter', e => {
+    if (e.pointerType !== 'touch') { hovered = true; sync(); }
+  });
+  fold.addEventListener('pointerleave', () => { hovered = false; sync(); });
+  fold.addEventListener('focus', () => { focused = true; sync(); });
+  fold.addEventListener('blur', () => { focused = false; sync(); });
+  fold.addEventListener('click', () => { pinned = !pinned; sync(); });
+  function close() {
+    hovered = focused = pinned = false;
+    fold.blur();
+    sync();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.addEventListener('pointerdown', e => { if (!fold.contains(e.target)) close(); });
+})();
+
+(()=>{
+  // Keep the author's title intact; shrink only when its text would overflow.
+  const title=document.querySelector('.post-header h1');
+  const fitTitle=()=>{
+    title.style.removeProperty('font-size');
+    const range=document.createRange();range.selectNodeContents(title);
+    for(let pass=0;pass<3;pass++){
+      const width=range.getBoundingClientRect().width;
+      const available=title.clientWidth-2;
+      if(available<=0||width<=available)break;
+      const size=parseFloat(getComputedStyle(title).fontSize);
+      title.style.fontSize=`${Math.floor(size*available/width*100)/100}px`;
+    }
+  };
+  fitTitle();
+  document.fonts.ready.then(fitTitle);
+  window.addEventListener('resize',fitTitle);
+  const button=document.querySelector('.toc-btn'),contents=document.querySelector('.toc');
+  const close=()=>{contents.classList.remove('open');button.setAttribute('aria-expanded','false');};
+  button.addEventListener('click',()=>{
+    const open=contents.classList.toggle('open');button.setAttribute('aria-expanded',String(open));
+  });
+  contents.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+  document.addEventListener('pointerdown',event=>{
+    if(!contents.contains(event.target)&&!button.contains(event.target))close();
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'){
+      close();
+      document.querySelectorAll('.nav-item').forEach(item=>item.classList.add('closed'));
+    }
+  });
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    item.addEventListener('pointerenter',()=>item.classList.remove('closed'));
+    item.addEventListener('focusin',()=>item.classList.remove('closed'));
+    item.querySelectorAll('.nav-sub a').forEach(a=>a.addEventListener('click',()=>item.classList.add('closed')));
+  });
+  document.querySelector('.copy').addEventListener('click',async event=>{
+    const button=event.currentTarget,text=document.querySelector('.bib code').textContent;
+    let copied=false;
+    try{await navigator.clipboard.writeText(text);copied=true;}catch{
+      // file:// may not expose Clipboard API; retain a local-only fallback.
+      const field=document.createElement('textarea');
+      field.value=text;field.setAttribute('readonly','');field.style.position='fixed';field.style.opacity='0';
+      document.body.append(field);field.select();
+      try{copied=document.execCommand('copy');}finally{field.remove();button.focus();}
+    }
+    const zh=document.documentElement.lang.startsWith('zh');
+    const message=copied?(zh?'已复制':'Copied'):(zh?'请选择引用文本手动复制':'Select the citation text to copy');
+    button.textContent=copied?message:button.dataset.copyLabel;
+    document.querySelector('.copy-status').textContent=message;
+    if(copied)setTimeout(()=>{button.textContent=button.dataset.copyLabel;},1800);
+  });
+})();
+
+// Loop at the measured presentation speed. Pause offscreen, never override a
+// reader's pause, and leave the native playback controls available.
+(() => {
+  document.querySelectorAll('video[data-auto-loop]').forEach(video => {
+    const motion=matchMedia('(prefers-reduced-motion: reduce)');
+    let visible=false,automaticPause=false,userPaused=motion.matches,pageActive=true;
+    video.muted=true;
+    video.loop=true;
+    function sync() {
+      const active=visible&&!document.hidden&&pageActive;
+      if (!active||userPaused) {
+        if (!video.paused) { automaticPause=true;video.pause(); }
+      } else if (video.paused) {
+        video.play().catch(() => { video.dataset.autoplayBlocked='true'; });
+      }
+    }
+    video.addEventListener('pause',() => {
+      if (automaticPause) { automaticPause=false;return; }
+      if (visible&&!document.hidden&&pageActive&&!video.ended) userPaused=true;
+    });
+    video.addEventListener('play',() => {
+      userPaused=false;
+      delete video.dataset.autoplayBlocked;
+      if (!visible||document.hidden||!pageActive) sync();
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        visible=entries[0].isIntersecting&&entries[0].intersectionRatio>=.15;
+        sync();
+      },{threshold:[0,.15]}).observe(video);
+    } else { visible=true;sync(); }
+    document.addEventListener('visibilitychange',sync);
+    addEventListener('pagehide',() => { pageActive=false;sync(); });
+    addEventListener('pageshow',() => { pageActive=true;sync(); });
+    motion.addEventListener('change',() => { if(motion.matches){userPaused=true;sync();} });
+    if (motion.matches) { video.autoplay=false;sync(); }
+  });
+})();
+
+(() => {
+  const root=document.getElementById('chunk-time-demo');
+  if (!root) return;
+  const copy=JSON.parse(root.dataset.ui);
+  const button=root.querySelector('.chunk-replay');
+  const toggle=root.querySelector('.chunk-toggle');
+  const buttonLabel=button.querySelector('.chunk-button-label');
+  const clock=root.querySelector('.chunk-clock');
+  const announcement=root.querySelector('.chunk-announcement');
+  const lanes=[...root.querySelectorAll('.chunk-lane')].map(node=>({
+    node,total:Number(node.dataset.totalMs),stages:JSON.parse(node.dataset.stages),
+    state:node.querySelector('.chunk-phase'),image:node.querySelector('img'),
+    video:node.querySelector('video'),playPending:false,playBlocked:false,
+  }));
+  if (!lanes.every(lane=>Number.isFinite(lane.total) && lane.total>0 &&
+      lane.stages[0].start_ms===0 && lane.stages.at(-1).end_ms===lane.total &&
+      lane.stages.every((stage,i)=>stage.end_ms>stage.start_ms &&
+        (i===0 || stage.start_ms===lane.stages[i-1].end_ms)))) return;
+  const maximum=Math.max(...lanes.map(lane=>lane.total));
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const endHold=1600;
+  let frame=0,lastTick=null,elapsed=0,cycle=0,ready=false,visible=false,pageActive=true;
+  let playing=!reducedMotion.matches;
+  const clamp=value=>Math.max(0,Math.min(1,value));
+  const canRun=()=>ready&&playing&&visible&&!document.hidden&&pageActive;
+  function preview(lane) {
+    const video=lane.video;
+    const revealed=elapsed>=lane.total;
+    const running=canRun()&&revealed;
+    if (!running) video.pause();
+    if (video.readyState<2) return;
+    const duration=Number.isFinite(video.duration)?video.duration:Number(video.dataset.previewDuration);
+    // The first-frame reveal follows the measured clock. Subsequent motion is
+    // explicitly a loop at measured steady FPS, not a fabricated release trace.
+    const target=revealed?((elapsed-lane.total)/1000)%duration:0;
+    if (!video.seeking&&Math.abs(video.currentTime-target)>.16) video.currentTime=target;
+    if (running&&video.paused&&!lane.playPending&&!lane.playBlocked) {
+      lane.playPending=true;
+      video.play().then(()=>{
+        if (!canRun()||elapsed<lane.total) video.pause();
+      }).catch(()=>{lane.playBlocked=true;}).finally(()=>{lane.playPending=false;});
+    }
+  }
+  function paint() {
+    clock.textContent=(Math.min(elapsed,maximum)/1000).toFixed(2)+' s';
+    root.dataset.cycle=String(cycle);
+    root.dataset.running=String(canRun()&&elapsed<maximum);
+    root.dataset.playing=String(playing);
+    toggle.textContent=playing?copy.pause:copy.play;
+    for (const lane of lanes) {
+      for (const stage of lane.stages) {
+        const progress=clamp((elapsed-stage.start_ms)/(stage.end_ms-stage.start_ms));
+        lane.node.querySelector('[data-stage="'+stage.key+'"] i').style.width=
+          (reducedMotion.matches?(progress===1?100:0):progress*100)+'%';
+      }
+      const active=lane.stages.find(stage=>elapsed<stage.end_ms);
+      lane.node.dataset.phase=active?.key||'done';
+      lane.state.textContent=!active?copy.done:
+        active.kind==='previous'?copy.previous:
+        active.kind==='lookahead'?copy.next:copy.stageLabels[lane.node.dataset.arm][active.key];
+      preview(lane);
+    }
+  }
+  function step(now) {
+    if (!canRun()) { sync();return; }
+    if (lastTick!==null) elapsed+=now-lastTick;
+    lastTick=now;
+    if (elapsed>=maximum+endHold) { elapsed=0;cycle++; }
+    paint();
+    frame=requestAnimationFrame(step);
+  }
+  function sync() {
+    cancelAnimationFrame(frame);frame=0;lastTick=null;
+    paint();
+    if (canRun()) frame=requestAnimationFrame(step);
+  }
+  function replay() {
+    if (!ready) return;
+    elapsed=0;playing=true;
+    lanes.forEach(lane=>{lane.playBlocked=false;});
+    announcement.textContent=copy.started;
+    sync();
+  }
+  toggle.addEventListener('click',()=>{
+    if (!ready) return;
+    playing=!playing;
+    lanes.forEach(lane=>{lane.playBlocked=false;});
+    announcement.textContent=playing?copy.play:copy.paused;
+    sync();
+  });
+  button.addEventListener('click',replay);
+  root.addEventListener('keydown',event=>{
+    if (event.key.toLowerCase()==='d' && !event.repeat && !event.ctrlKey && !event.altKey && !event.metaKey) {
+      event.preventDefault();replay();
+    }
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries=>{
+      visible=entries[0].isIntersecting&&entries[0].intersectionRatio>=.15;
+      sync();
+    },{threshold:[0,.15]}).observe(root);
+  } else { visible=true; }
+  document.addEventListener('visibilitychange',sync);
+  addEventListener('pagehide',()=>{pageActive=false;sync();});
+  addEventListener('pageshow',()=>{pageActive=true;sync();});
+  reducedMotion.addEventListener('change',()=>{
+    if (reducedMotion.matches) { playing=false;sync(); }
+  });
+  lanes.forEach(lane=>{
+    lane.video.muted=true;
+    if (lane.video.readyState>=2) lane.video.dataset.ready='true';
+    lane.video.addEventListener('loadeddata',()=>{lane.video.dataset.ready='true';preview(lane);});
+    lane.video.addEventListener('error',()=>{lane.video.dataset.ready='false';});
+  });
+  // Only tiny posters gate startup, not full-resolution PNGs or video downloads.
+  // A failed clip leaves the first-frame poster and measured timeline usable.
+  Promise.allSettled(lanes.map(lane=>lane.image.decode())).then(()=>{
+    ready=true;root.dataset.loaded='true';button.disabled=toggle.disabled=false;
+    buttonLabel.textContent=copy.replay;sync();
+  });
+})();
+
+(()=>{
+  document.querySelectorAll('[data-stage-chart]').forEach(chart=>{
+    const rows=[...chart.querySelectorAll('[data-stage-index]')];
+    if(rows.length<2)return;
+    const last=rows.length-1,unit=chart.dataset.fpsUnit||'DiT FPS';
+    const zh=chart.dataset.lang==='zh',motion=matchMedia('(prefers-reduced-motion: reduce)');
+    const toggle=chart.querySelector('[data-stage-toggle]'),replay=chart.querySelector('[data-stage-replay]');
+    const status=chart.querySelector('.stage-status'),baseMs=Number(rows[0].dataset.ms);
+    const read=key=>chart.querySelector(`[data-stage-${key}]`);
+    let index=motion.matches?last:0,playing=false,started=false,visible=false,timer=null,cycle=0;
+    const clear=()=>{clearTimeout(timer);timer=null;};
+    const paint=announce=>{
+      const row=rows[index],fps=Number(row.dataset.fps),ms=Number(row.dataset.ms);
+      chart.dataset.stage=String(index);
+      chart.dataset.playing=String(playing);
+      chart.dataset.cycle=String(cycle);
+      rows.forEach((r,i)=>{r.setAttribute('aria-pressed',String(i===index));r.dataset.future=String(i>index);});
+      read('name').textContent=row.dataset.name;
+      read('detail').textContent=row.dataset.detail;
+      read('count').textContent=zh?`已加入 ${index} / ${last} 项优化`:`${index} / ${last} optimizations added`;
+      read('fps').textContent=fps.toFixed(2);
+      read('ms').textContent=ms.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      read('ratio').textContent=(baseMs/ms).toFixed(2)+'×';
+      toggle.textContent=playing?(zh?'暂停':'Pause'):(zh?'播放':'Play');
+      toggle.setAttribute('aria-label',playing?(zh?'暂停阶段动画':'Pause stage animation'):(zh?'播放阶段动画':'Play stage animation'));
+      if(announce)status.textContent=`${row.dataset.name}: ${fps.toFixed(2)} ${unit}`;
+    };
+    const schedule=()=>{
+      clear();
+      if(!playing||!visible||document.hidden)return;
+      timer=setTimeout(()=>{
+        index=(index+1)%rows.length;
+        if(index===0)cycle++;
+        paint(false);schedule();
+      },index===last?1200:900);
+    };
+    const start=reset=>{
+      clear();started=true;
+      if(reset||index===rows.length-1)index=0;
+      playing=true;paint(false);schedule();
+    };
+    const pause=()=>{playing=false;clear();paint(false);};
+    rows.forEach((row,i)=>{
+      row.disabled=false;
+      row.addEventListener('click',()=>{started=true;playing=false;clear();index=i;paint(true);});
+    });
+    toggle.addEventListener('click',()=>playing?pause():start(false));
+    replay.addEventListener('click',()=>start(true));
+    chart.querySelector('.stage-controls').hidden=false;
+    chart.dataset.stageReady='true';paint(false);
+    if('IntersectionObserver' in window){
+      const observer=new IntersectionObserver(entries=>{
+        visible=entries[0].isIntersecting&&entries[0].intersectionRatio>=.2;
+        if(visible&&!started&&!motion.matches)start(true);else schedule();
+      },{threshold:[0,.2]});
+      observer.observe(chart);
+    }else{visible=true;if(!motion.matches)start(true);}
+    document.addEventListener('visibilitychange',schedule);
+    window.addEventListener('pagehide',clear);
+    window.addEventListener('pageshow',schedule);
+    motion.addEventListener('change',()=>{
+      if(motion.matches){playing=false;clear();index=rows.length-1;paint(false);}
+    });
+  });
+})();
+</script></body></html>
